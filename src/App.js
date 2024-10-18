@@ -1,0 +1,78 @@
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  // Link
+} from "react-router-dom";
+import { 
+  Button, 
+  Link, 
+  Container,
+  Box,
+  AppBar,
+  Toolbar,
+  Typography
+} from '@mui/material'; 
+import Home from "./Home"
+import Search from "./Search"
+import Admin from "./Admin"
+import NotFound from "./404"
+
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import { styled } from '@mui/material/styles';
+
+
+
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+  ...theme.applyStyles('dark', {
+    backgroundColor: '#1A2027',
+  }),
+}));
+
+
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
+export default function App() {
+  return (
+    <ThemeProvider theme={darkTheme}>
+    <CssBaseline />
+    <Router>
+      <Container maxWidth={false}>
+      <Box sx={{p:2}}>
+        <AppBar>
+        <Toolbar>
+        <Stack direction="row" spacing={2}>
+        <Link href="/" underline="none"><Typography variant="h5">Home</Typography></Link>
+        <Link href="/search" underline="none"><Typography variant="h5">Search</Typography></Link>
+        <Typography variant="h5"><Link href="/admin" underline="none" color="secondary">Admin</Link></Typography>
+          </Stack> 
+        </Toolbar>
+        </AppBar>
+        <Routes>
+          <Route exact path="/" element={<Home/>} />
+          <Route path="/search" element={<Search/>} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        </Box>
+      </Container>
+    </Router>
+    </ThemeProvider>
+  );
+}
+
