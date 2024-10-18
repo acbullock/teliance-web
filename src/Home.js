@@ -10,29 +10,23 @@ import {
   Button,
   MenuItem,
   Stack,
-  List,
-  ListItem,
-  IconButton,
-  ListItemAvatar,
-  Avatar,
-  ListItemText,
-  FormLabel,
+  // List,
+  // ListItem,
+  // IconButton,
+  // ListItemAvatar,
+  // Avatar,
+  // ListItemText,
+  // FormLabel,
   RadioGroup,
   FormControlLabel,
   Radio,
 
 } from '@mui/material'; 
-import DeleteIcon from '@mui/icons-material/Delete';
-import FolderIcon from '@mui/icons-material/Folder';
+// import DeleteIcon from '@mui/icons-material/Delete';
+// import FolderIcon from '@mui/icons-material/Folder';
 import { DataGrid } from '@mui/x-data-grid';
 const ariaLabel = { 'aria-label': 'description' };
-function generate(element) {
-  return [0, 1, 2].map((value) =>
-    React.cloneElement(element, {
-      key: value,
-    }),
-  );
-}
+
 const paginationModel = { page: 0, pageSize: 5 };
 
 const columns = [
@@ -51,9 +45,7 @@ const columns = [
 
 export default function Home() {
   const [error, setError] = React.useState(false);
-  const [dense, setDense] = React.useState(false);
   const [type, setType] = React.useState("contains");
-  const [secondary, setSecondary] = React.useState(false);
   const [acRegions, setAcRegions] = React.useState('');
   const [states, setStates] = React.useState([]);
   const [areaCodes, setAreaCodes] = React.useState([]);
@@ -106,7 +98,7 @@ export default function Home() {
     }
 
     let data = await fetch("https://eddb.teliance.com/api/phone-numbers/filter?" + query)
-    if (data.status != 404){
+    if (data.status !== 404){
       data = await data.json();
       data = data.filter(d=>d.price > 0)
       data = data.map(d=>{
@@ -130,8 +122,8 @@ export default function Home() {
   }
   const handleChangeAreaCode = (event) => {
     let value = event.target.value.substring(0,3)
-    if (value.length == 3) {
-      let ar = acRegions.find((ac)=>ac.area_code == value)|| {area_code: value, region: "NA"}
+    if (value.length === 3) {
+      let ar = acRegions.find((ac)=>ac.area_code === value)|| {area_code: value, region: "NA"}
       setState(ar.region)
     }
     setAreaCode(value);
@@ -145,7 +137,7 @@ export default function Home() {
   const handleChangeState = (event) => {
       setState(event.target.value);
       if (event.target.value){
-        let filteredAreaCodes = acRegions.filter(ac=>ac.region == event.target.value).map(a=>a.area_code).sort((a,b)=>a-b)
+        let filteredAreaCodes = acRegions.filter(ac=>ac.region === event.target.value).map(a=>a.area_code).sort((a,b)=>a-b)
         setAreaCodes(filteredAreaCodes)
       }
       else{
