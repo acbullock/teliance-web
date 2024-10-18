@@ -3,10 +3,10 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  // Link
+  Link
 } from "react-router-dom";
 import { 
-  Link, 
+  // Link, 
   Container,
   Box,
   AppBar,
@@ -38,10 +38,16 @@ export default function App() {
         <AppBar>
         <Toolbar>
         <Stack direction="row" spacing={2}>
-        <Link href="/" underline="none"><Typography variant="h5">Home</Typography></Link>
-        <Link href="/search" underline="none"><Typography variant="h5">Search</Typography></Link>
-        <Typography variant="h5"><Link href="/admin" underline="none" color="secondary">Admin</Link></Typography>
-          </Stack> 
+        <Link to="/" style={{ textDecoration: 'none', color: "primary" }}>
+              <Typography variant="h5" sx={{color: "primary.main"}}>Home</Typography>
+        </Link>
+        <Link to="/search" style={{ textDecoration: 'none' , color: "primary" }}>
+          <Typography variant="h5" sx={{color: "primary.main"}}>Search</Typography>
+        </Link>
+        <Link to="/admin" style={{ textDecoration: 'none', color: 'secondary' }}>
+          <Typography variant="h5" sx={{color: "secondary.main"}}>Admin</Typography>
+        </Link>
+        </Stack> 
         </Toolbar>
         </AppBar>
         <Routes>

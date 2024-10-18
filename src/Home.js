@@ -25,6 +25,7 @@ import {
 // import DeleteIcon from '@mui/icons-material/Delete';
 // import FolderIcon from '@mui/icons-material/Folder';
 import { DataGrid } from '@mui/x-data-grid';
+import Filters from "./Filters"
 const ariaLabel = { 'aria-label': 'description' };
 
 const paginationModel = { page: 0, pageSize: 5 };
@@ -173,7 +174,9 @@ export default function Home() {
 
 
   return (
+
     <Container maxWidth={false} sx={{mt:15}} align='center'>
+    {/*<Filters />*/}
       <Box sx={{p:2}} >
         <img
           srcSet={`https://cdn.prod.website-files.com/66a2d277a142a2f6c9a60ac7/66b04bc985377ea6bfbc1a54_ed256.png?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
