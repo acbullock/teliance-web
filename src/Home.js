@@ -25,7 +25,7 @@ import {
 // import DeleteIcon from '@mui/icons-material/Delete';
 // import FolderIcon from '@mui/icons-material/Folder';
 import { DataGrid } from '@mui/x-data-grid';
-import Filters from "./Filters"
+import Results from "./Results"
 const ariaLabel = { 'aria-label': 'description' };
 
 const paginationModel = { page: 0, pageSize: 5 };
@@ -75,6 +75,7 @@ export default function Home() {
     setState("")
     setSearch("")
     setType("contains")
+    setResults([])
   }
   const handleSearch = async () => {
     let query = ""
@@ -176,7 +177,6 @@ export default function Home() {
   return (
 
     <Container maxWidth={false} sx={{mt:15}} align='center'>
-    {/*<Filters />*/}
       <Box sx={{p:2}} >
         <img
           srcSet={`https://cdn.prod.website-files.com/66a2d277a142a2f6c9a60ac7/66b04bc985377ea6bfbc1a54_ed256.png?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
@@ -201,6 +201,7 @@ export default function Home() {
           onChange={handleChangeState}
           value={state}
           label="State"
+          defaultValue=""
         >
         <MenuItem key="" value="">Select One..</MenuItem>
         {states && states.map((item) => (
@@ -208,7 +209,7 @@ export default function Home() {
         ))}
         </Select>
       </FormControl>
-      <FormControl sx={{width: "15ch"}} error={error}>
+      <FormControl sx={{width: "10ch"}} error={error}>
         <InputLabel id="demo-simple-select-label">Area Code</InputLabel>
         <Select
           labelId="demo-simple-select-label"
@@ -216,6 +217,7 @@ export default function Home() {
           onChange={handleChangeAreaCode}
           value={areaCode}
           label="Area Code"
+          defaultValue=""
         >
         <MenuItem key="" value="">Select One..</MenuItem>
         {areaCodes && areaCodes.map((item) => (
@@ -223,7 +225,7 @@ export default function Home() {
         ))}
         </Select>
       </FormControl>
-      <FormControl sx={{width: "35ch"}} error={error}>
+      <FormControl sx={{width: "20ch"}} error={error}>
       <OutlinedInput placeholder="Search" value={search.trim()} inputProps={ariaLabel} onChange={handleChangeSearch}/>
       </FormControl>
       <br/>
@@ -254,6 +256,7 @@ export default function Home() {
       <Button variant="contained"  color="primary" onClick={handleSearch}>Search</Button>
     </Stack>
     </Box>
+    <Results results={results || []}/>
     <Box  component="section" 
     display={results.length > 0 ? "flex" : "none"}
     justifyContent="center"
