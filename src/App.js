@@ -32,15 +32,15 @@ export default function App() {
   return (
     <ThemeProvider theme={darkTheme}>
     <CssBaseline />
-    <Router>
+    <Router  basename="/teliance-web">
       <Container maxWidth={false}>
       <Box sx={{p:2}}>
         <AppBar>
         <Toolbar>
         <Stack direction="row" spacing={2}>
-        <Link href="./" underline="none"><Typography variant="h5">Home</Typography></Link>
-        <Link href="./search" underline="none"><Typography variant="h5">Search</Typography></Link>
-        <Typography variant="h5"><Link href="./admin" underline="none" color="secondary">Admin</Link></Typography>
+        <Link href="/" underline="none"><Typography variant="h5">Home</Typography></Link>
+        <Link href="/search" underline="none"><Typography variant="h5">Search</Typography></Link>
+        <Typography variant="h5"><Link href="/admin" underline="none" color="secondary">Admin</Link></Typography>
           </Stack> 
         </Toolbar>
         </AppBar>
