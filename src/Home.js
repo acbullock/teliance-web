@@ -9,6 +9,8 @@ import {
   Stack,
   Autocomplete,
   TextField,
+  Card,
+  CardContent,
   // List,
   // ListItem,
   // IconButton,
@@ -346,6 +348,7 @@ export default function Home() {
   return (
 
     <Container maxWidth={false} sx={{mt:15}} align='center'>
+     
       <Box sx={{p:2}} >
         <img
           srcSet={`https://cdn.prod.website-files.com/66a2d277a142a2f6c9a60ac7/66b04bc985377ea6bfbc1a54_ed256.png?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
@@ -356,9 +359,11 @@ export default function Home() {
         <Typography variant="h3" sx={{ fontWeight: 'bold' }}>Exclusive Digits</Typography>
         <Typography variant="h6">Pricing for Every Business</Typography>
       </Box>
+       <Card elevation={3} sx={{width: "50%", overflow: 'visible'}}>
+      <CardContent>
       <Box
       component="form"
-      sx={{ '& > :not(style)': { m: 1 }}}
+      sx={{  '& > :not(style)': { m: 1 }}}
       noValidate
       autoComplete="off" 
       >
@@ -419,7 +424,8 @@ export default function Home() {
       <Button variant="contained"  color="primary" onClick={handleFilter}>Search</Button>
     </Stack>
     </Box>
-    
+    </CardContent>
+      </Card>
 
     {/*Results*/}
     <Results results={results || []} filter={handleFilter} updateResults={setResults} search={handleSearch} homeState={stateVals} homeSetters = {setters}/>
