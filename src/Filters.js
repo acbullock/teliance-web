@@ -198,6 +198,7 @@ export default function Filters(props) {
     props.homeSetters.setThousand(false)
     props.homeSetters.setDoubleAreaCode(false)
     props.homeSetters.setTripleAreaCode(false)
+
   };
   // React.useEffect(()=>{
   //   handleFilter()
