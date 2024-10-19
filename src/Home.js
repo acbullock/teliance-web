@@ -273,7 +273,6 @@ export default function Home() {
       </FormControl>
       <FormControl sx={{width: "15ch"}} >
         <Autocomplete
-        error={error}
           disablePortal
           options={areaCodes}
           value={areaCode}

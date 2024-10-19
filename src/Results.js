@@ -34,7 +34,7 @@ export default function Results(props) {
   return (
     <Container maxWidth={false} sx={{mt:5}}>
       <Grid container spacing={2} >
-        <Grid item md={12} lg={4}>
+        <Grid item xs={12} md={4}>
           <Box component="section" 
           justifyContent="center"
           alignItems="center"
@@ -44,12 +44,12 @@ export default function Results(props) {
           </Box>
         </Grid>
 
-        <Grid item md={12} lg={8}>
+        <Grid item  xs={12} md={8}>
           <Box  component="section" 
           justifyContent="center"
           alignItems="center"
-          maxWidth="md"
           style={{ height: '80%',  width: '100%' }}
+           maxWidth="md"
           >
           <Typography variant="h4">Results</Typography>
            <DataGrid
