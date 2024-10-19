@@ -5,10 +5,7 @@ import {
   Box,
   FormControl,
   OutlinedInput,
-  InputLabel,
-  Select,
   Button,
-  MenuItem,
   Stack,
   Autocomplete,
   TextField,
@@ -26,20 +23,10 @@ import {
 } from '@mui/material'; 
 // import DeleteIcon from '@mui/icons-material/Delete';
 // import FolderIcon from '@mui/icons-material/Folder';
-import { DataGrid } from '@mui/x-data-grid';
 import Results from "./Results"
 const ariaLabel = { 'aria-label': 'description' };
 
-const paginationModel = { page: 0, pageSize: 10 };
 
-const columns = [
-  { field: 'number', headerName: 'Phone Number', width: 200, flex:1, align: "center", headerAlign: 'center', headerClassName: "primary" },
-  // { field: 'region', headerName: 'State', width: 150 , flex:1, align: "center", headerAlign: 'center',},
-  { field: 'price', headerName: 'Price', width: 150, flex:1, align: "center", headerAlign: 'center', sortComparator: (v1, v2) => parseFloat(v1.replace("$", "")) - parseFloat(v2.replace("$", "")), renderCell: (params)=>{
-    return <Button variant="outlined">{params.value}</Button>
-
-  }},
-];
 
 
 
@@ -57,7 +44,7 @@ export default function Home() {
   const [search, setSearch] = React.useState('');
   const [results, setResults] = React.useState([]);
 
-  {/*filters*/}
+  //filters
   const [repeater, setRepeater] = React.useState(false);
   const [xxxx, setXXXX] = React.useState(false);
   const [x0x0, setX0X0] = React.useState(false);
@@ -164,7 +151,100 @@ export default function Home() {
     setDoubleAreaCode(false)
     setTripleAreaCode(false)
   }
-
+  const handleFilter = () => {
+    handleSearch().then(results=>{
+      if (!results)return
+      if(doubleAreaCode){
+        let reg = new RegExp(/^(\d\d\d)(\1)\d\d\d\d$/)
+        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
+      }
+      if(tripleAreaCode){
+        let reg = new RegExp(/^(\d\d\d)(\1)(\1)/)
+        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
+      }
+      if(ascending){
+        let reg = new RegExp(/(012|123|234|345|456|567|678|789|890)/)
+        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
+      }
+      if(descending){
+        let reg = new RegExp(/(098|987|876|765|654|543|432|321|210)/)
+        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
+      }
+      if(repeater){
+        let reg = new RegExp(/(\d)\1\1\1\1\1\1/)
+        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
+      }
+      if (xxxx) {
+        let reg = new RegExp(/^\d\d\d(\d)*(\d)\2\2\2/)
+        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
+      }
+      if (xxxxx) {
+        let reg = new RegExp(/^\d\d\d(\d)*(\d)\2\2\2\2/)
+        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
+      }
+      if (x0x0) {
+        let reg = new RegExp(/^\d\d\d(\d)*(\d)(0)\2(0)/)
+        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
+      }
+      if(xy00) {
+        let reg = new RegExp(/\d\d\d(\d)*([1-9])(?!\2)([1-9])00/)
+        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
+        
+      }
+      if(xxxxxxy) {
+        let reg = new RegExp(/\d\d\d(\d)\1\1\1\1\1(?!\1)(\d)/)
+        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
+      }
+      if (xyyyyyy) {
+        let reg = new RegExp(/^(\d\d\d)(\d)((?!\1)(\d))\3\3\3\3\3$/)
+        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
+      }
+      if (xy00000) {
+        let reg = new RegExp(/^(\d\d\d)([1-9])((?!\1)([1-9]))(00000)$/)
+        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
+        
+      }
+      if(xyxyxy){
+        let reg = new RegExp(/\d\d\d(\d)(?!\1)(\d)\1\2\1\2/)
+        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
+        
+      }
+      if(xxxyyyy){
+        let reg = new RegExp(/^\d\d\d(\d)\1\1(?!\1)(\d)\2\2\2$/)
+        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
+        
+      }
+      if(x00y000){
+        let reg = new RegExp(/^\d\d\d([1-9])(00)(?!\1)([1-9])(000)$/)
+        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
+        
+      }
+      if(x00x000){
+        let reg = new RegExp(/^\d\d\d([1-9])(00)(\1)(000)$/)
+        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
+        
+      }
+      if(thousand){
+        let reg = new RegExp(/\d\d\d(\d)*(\d)000/)
+        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
+        
+      }
+      if(million){
+        let reg = new RegExp(/\d\d\d(\d)*(\d)000000/)
+        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
+        
+      }
+      if(xyxxxxx){
+        let reg = new RegExp(/(\d)(?!\1)(\d)\1\1\1\1\1$/)
+        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
+        
+      }
+      //console.log(price[0], results[0].price.replace(/[^0-9]+/g, ""))
+      results = results.filter(r=>parseFloat(r.price.replace("$", "")) >= price[0])
+      results = results.filter(r=>parseFloat(r.price.replace("$", "")) <= price[1])
+      setResults(results)
+    })
+  }
   const handleSearch = async () => {
     let query = ""
     if (!state && !areaCode && !search) {
@@ -211,7 +291,7 @@ export default function Home() {
 
   }
   const handleChangeAreaCode = (event) => {
-    let value = event.target.innerText && event.target.innerText.substring(0,3) || ""
+    let value = (event.target.innerText && event.target.innerText.substring(0,3)) || ""
     if (value.length === 3) {
       let ar = acRegions.find((ac)=>ac.area_code === value)|| {area_code: value, region: "NA"}
       setState(ar.region)
@@ -336,13 +416,13 @@ export default function Home() {
     >
     <Stack direction="row" spacing={2}>
       <Button variant="outlined" onClick={clearAll} color="secondary">Clear All</Button>
-      <Button variant="contained"  color="primary" onClick={handleSearch}>Search</Button>
+      <Button variant="contained"  color="primary" onClick={handleFilter}>Search</Button>
     </Stack>
     </Box>
     
 
     {/*Results*/}
-    <Results results={results || []} updateResults={setResults} search={handleSearch} homeState={stateVals} homeSetters = {setters}/>
+    <Results results={results || []} filter={handleFilter} updateResults={setResults} search={handleSearch} homeState={stateVals} homeSetters = {setters}/>
     </Container>
     );
 }

@@ -28,7 +28,7 @@ export default function Results(props) {
           alignItems="center"
           maxWidth="md"
           style={{ height: '80%',  width: '100%' }}>
-            <Filters results={props.results} updateResults={props.updateResults} search={props.search} homeState={props.homeState} homeSetters={props.homeSetters}/>
+            <Filters filter={props.filter} results={props.results} updateResults={props.updateResults} search={props.search} homeState={props.homeState} homeSetters={props.homeSetters}/>
           </Box>
         </Grid>
 
@@ -36,7 +36,7 @@ export default function Results(props) {
           <Box  component="section" 
           justifyContent="center"
           alignItems="center"
-          style={{ height: '80%',  width: '100%' }}
+          style={{ height: '60%',  width: '100%' }}
            maxWidth="md"
           >
           <Typography variant="h4">Results</Typography>

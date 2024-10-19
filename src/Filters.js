@@ -11,123 +11,11 @@ import {
   Checkbox,
   Button,
   Slider,
-  Stack
 } from '@mui/material'; 
-import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import VolumeDown from '@mui/icons-material/VolumeDown';
-import VolumeUp from '@mui/icons-material/VolumeUp';
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-  ...theme.applyStyles('light', {
-    backgroundColor: '#1A2027',
-  }),
-}));
 
 export default function Filters(props) {
-  
-  const handleFilter = () => {
-    props.search().then(results=>{
-      if (!results)return
-      if(props.homeState.doubleAreaCode){
-        let reg = new RegExp(/^(\d\d\d)(\1)\d\d\d\d$/)
-        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
-      }
-      if(props.homeState.tripleAreaCode){
-        let reg = new RegExp(/^(\d\d\d)(\1)(\1)\d$/)
-        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
-      }
-      if(props.homeState.ascending){
-        let reg = new RegExp(/(012|123|234|345|456|567|678|789|890)/)
-        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
-      }
-      if(props.homeState.descending){
-        let reg = new RegExp(/(098|987|876|765|654|543|432|321|210)/)
-        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
-      }
-      if(props.homeState.repeater){
-        let reg = new RegExp(/(\d)\1\1\1\1\1\1/)
-        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
-      }
-      if (props.homeState.xxxx) {
-        let reg = new RegExp(/^\d\d\d(\d)*(\d)\2\2\2/)
-        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
-      }
-      if (props.homeState.xxxxx) {
-        let reg = new RegExp(/^\d\d\d(\d)*(\d)\2\2\2\2/)
-        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
-      }
-      if (props.homeState.x0x0) {
-        let reg = new RegExp(/^\d\d\d(\d)*(\d)(0)\2(0)/)
-        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
-      }
-      if(props.homeState.xy00) {
-        let reg = new RegExp(/\d\d\d(\d)*([1-9])(?!\2)([1-9])00/)
-        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
-        
-      }
-      if(props.homeState.xxxxxxy) {
-        let reg = new RegExp(/\d\d\d(\d)\1\1\1\1\1(?!\1)(\d)/)
-        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
-      }
-      if (props.homeState.xyyyyyy) {
-        let reg = new RegExp(/^(\d\d\d)(\d)((?!\1)(\d))\3\3\3\3\3$/)
-        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
-      }
-      if (props.homeState.xy00000) {
-        let reg = new RegExp(/^(\d\d\d)([1-9])((?!\1)([1-9]))(00000)$/)
-        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
-        
-      }
-      if(props.homeState.xyxyxy){
-        let reg = new RegExp(/\d\d\d(\d)(?!\1)(\d)\1\2\1\2/)
-        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
-        
-      }
-      if(props.homeState.xxxyyyy){
-        let reg = new RegExp(/^\d\d\d(\d)\1\1(?!\1)(\d)\2\2\2$/)
-        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
-        
-      }
-      if(props.homeState.x00y000){
-        let reg = new RegExp(/^\d\d\d([1-9])(00)(?!\1)([1-9])(000)$/)
-        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
-        
-      }
-      if(props.homeState.x00x000){
-        let reg = new RegExp(/^\d\d\d([1-9])(00)(\1)(000)$/)
-        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
-        
-      }
-      if(props.homeState.thousand){
-        let reg = new RegExp(/\d\d\d(\d)*(\d)000/)
-        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
-        
-      }
-      if(props.homeState.million){
-        let reg = new RegExp(/\d\d\d(\d)*(\d)000000/)
-        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
-        
-      }
-      if(props.homeState.xyxxxxx){
-        let reg = new RegExp(/(\d)(?!\1)(\d)\1\1\1\1\1$/)
-        results = results.filter(r=>reg.test(r.number.replace(/[^0-9]+/g, "")))
-        
-      }
-      console.log(props.homeState.price[0], results[0].price.replace(/[^0-9]+/g, ""))
-      results = results.filter(r=>parseFloat(r.price.replace("$", "")) >= props.homeState.price[0])
-      results = results.filter(r=>parseFloat(r.price.replace("$", "")) <= props.homeState.price[1])
-      props.updateResults(results)
-    })
-    
-
-  }
   const handleChangePrice = (event, newValue) => {
     props.homeSetters.setPrice(newValue)
   }
@@ -277,7 +165,7 @@ export default function Filters(props) {
             style={{ height: '80%',  width: '100%' }}>
             <Button variant="text" color="secondary" onClick={handleReset}><Typography variant="h6">Reset</Typography></Button>
             
-            <Button variant="outlined" onClick={handleFilter}><Typography variant="h6">Update</Typography></Button>
+            <Button variant="outlined" onClick={props.filter}><Typography variant="h6">Update</Typography></Button>
             </Box>
             </Grid>
           </Grid>
@@ -294,14 +182,14 @@ export default function Filters(props) {
         </AccordionSummary>
         <AccordionDetails>
           <Typography variant="h6">
-            {"$" + props.homeState.price[0] + " - " + "$" + props.homeState.price[1]}
+            {`$${props.homeState.price[0]} - $${props.homeState.price[1]}`}
           </Typography>
           <Box sx={{ width: 300 }}>
             <Slider
             color="info"
               min={0}
               max={75000}
-              step={100}
+              step={50}
               getAriaLabel={() => 'Price range'}
               value={props.homeState.price}
               onChange={handleChangePrice}
@@ -316,7 +204,7 @@ export default function Filters(props) {
             style={{ height: '80%',  width: '100%' }}>
             <Button variant="text" color="secondary" onClick={handleResetPrice}><Typography variant="h6">Reset</Typography></Button>
             
-            <Button variant="outlined" onClick={handleFilter}><Typography variant="h6">Update</Typography></Button>
+            <Button variant="outlined" onClick={props.filter}><Typography variant="h6">Update</Typography></Button>
             </Box>
         </AccordionDetails>
       </Accordion>
@@ -326,12 +214,11 @@ export default function Filters(props) {
           aria-controls="panel3-content"
           id="panel3-header"
         >
-          <Typography>Category</Typography>
+          <Typography variant="h6">Category</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+          <Typography variant="h6">
+            Coming Soon
           </Typography>
         </AccordionDetails>
       </Accordion>
