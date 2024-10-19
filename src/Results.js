@@ -16,39 +16,44 @@ const Item = styled(Paper)(({ theme }) => ({
   }),
 }));
 const columns = [
-  { field: 'number', headerName: 'Phone Number', width: 200, flex:1, align: "center", headerAlign: 'center', headerClassName: "primary" },
-  // { field: 'region', headerName: 'State', width: 150 , flex:1, align: "center", headerAlign: 'center',},
-  { field: 'price', headerName: 'Price', width: 150, flex:1, align: "center", headerAlign: 'center',renderCell: (params)=>{
-    return <Button variant="outlined">{params.value}</Button>
+  { field: 'number', headerName: 'Phone Number', width: 200, flex:1, align: "center", headerAlign: 'center', headerClassName: "primary" , renderCell: (params)=>{
+    return <Typography variant="h6">{params.value}</Typography>
+  }},
+   { field: 'region', headerName: 'State', width: 150 , flex:1, align: "center", headerAlign: 'center', renderCell: (params)=>{
+    return <Typography variant="h6">{params.value}</Typography>
+   }},
+  { field: 'price', headerName: 'Price', width: 50, flex:1, align: "center", headerAlign: 'center',renderCell: (params)=>{
+    return <Button variant="outlined"><Typography variant="h6">{params.value}</Typography></Button>
 
   }},
 ];
-const paginationModel = { page: 0, pageSize: 5 };
+const paginationModel = { page: 0, pageSize: 10 };
 
 export default function Results(props) {
 
   return (
-    <Container maxWidth={false} sx={{mt:15,}}>
+    <Container maxWidth={false} sx={{mt:5,}}>
       <Grid container spacing={2}>
-        <Grid item xs={4}>
+        <Grid item xs={12} lg={4}>
           <Box component="section" 
-          display={props.results.length > 0 ? "flex" : "none"}
           justifyContent="center"
           alignItems="center"
           maxWidth="md"
           style={{ height: '80%',  width: '100%' }}>
-            <Filters />
+            <Filters results={props.results} updateResults={props.updateResults} search={props.search} homeState={props.homeState} homeSetters={props.homeSetters}/>
           </Box>
         </Grid>
-        <Grid item xs={8}>
+
+        <Grid item md={12} lg={8}>
           <Box  component="section" 
-          display={props.results.length > 0 ? "flex" : "none"}
           justifyContent="center"
           alignItems="center"
           maxWidth="md"
+
           style={{ height: '80%',  width: '100%' }}
           >
            <DataGrid
+
             rows={props.results.length > 0 ? props.results : []}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}

@@ -55,6 +55,69 @@ export default function Home() {
   const [search, setSearch] = React.useState('');
   const [results, setResults] = React.useState([]);
 
+  {/*filters*/}
+  const [repeater, setRepeater] = React.useState(false);
+  const [xxxx, setXXXX] = React.useState(false);
+  const [x0x0, setX0X0] = React.useState(false);
+  const [million, setMillion] = React.useState(false)
+  const [ascending, setAscending] = React.useState(false)
+  const [descending, setDescending] = React.useState(false)
+  const [xy00, setXY00] = React.useState(false);
+  const [xxxxx, setXXXXX] = React.useState(false);
+  const [xxxxxxy, setXXXXXXY] = React.useState(false)
+  const [xyyyyyy, setXYYYYYY] = React.useState(false)
+  const [xy00000, setXY00000] = React.useState(false)
+  const [xyxyxy, setXYXYXY] = React.useState(false)
+  const [xxxyyyy, setXXXYYYY] = React.useState(false)
+  const [x00y000, setX00Y000] = React.useState(false)
+  const [x00x000, setX00X000] = React.useState(false)
+  const [thousand, setThousand] = React.useState(false)
+  const [xyxxxxx, setXYXXXXX] = React.useState(false)
+  const [doubleAreaCode, setDoubleAreaCode] = React.useState(false)
+  const [tripleAreaCode, setTripleAreaCode] = React.useState(false)
+
+  const stateVals = {
+    repeater,
+    xxxx,
+    x0x0,
+    ascending,
+    descending,
+    million,
+    xy00,
+    xxxxx,
+    xxxxxxy,
+    xyyyyyy,
+    xy00000,
+    xyxyxy,
+    xxxyyyy,
+    x00y000,
+    x00x000,
+    thousand,
+    xyxxxxx,
+    doubleAreaCode,
+    tripleAreaCode,
+  };
+  const setters = {
+    setRepeater,
+    setXXXX,
+    setX0X0,
+    setAscending,
+    setDescending,
+    setMillion,
+    setXY00,
+    setXXXXX,
+    setXXXXXXY,
+    setXYYYYYY,
+    setXY00000,
+    setXYXYXY,
+    setXXXYYYY,
+    setX00Y000,
+    setX00X000,
+    setThousand,
+    setXYXXXXX,
+    setDoubleAreaCode,
+    setTripleAreaCode,
+  }
 
   const wordToNumbers = (str) => {
     let keyPad = {
@@ -119,7 +182,7 @@ export default function Home() {
     }
     console.log("results", data)
     setResults(data)
-    
+    return data
 
   }
   const handleChangeAreaCode = (event) => {
@@ -243,6 +306,7 @@ export default function Home() {
         <FormControlLabel value="endsWith" control={<Radio />} label="Ends With" />
       </RadioGroup>
     </FormControl>
+
     </Box>
 
     <Box  component="section" 
@@ -256,35 +320,10 @@ export default function Home() {
       <Button variant="contained"  color="primary" onClick={handleSearch}>Search</Button>
     </Stack>
     </Box>
-    <Results results={results || []}/>
-    <Box  component="section" 
-    display={results.length > 0 ? "flex" : "none"}
-    justifyContent="center"
-    alignItems="center"
-    maxWidth="md"
-    style={{ height: 350, width: '100%' }}
-    >
-     <DataGrid
-      rows={results.length > 0 ? results : []}
-      columns={columns}
-      initialState={{ pagination: { paginationModel } }}
-      pageSizeOptions={[5, 10]}
-      sx={{ mt: 10 }}
+    
 
-  />
-    </Box>
-    <Box  component="section" 
-    display={results.length > 0 ? "none" : "flex"}
-    justifyContent="center"
-    alignItems="center"
-    maxWidth="md"
-    style={{ height: 350, width: '100%' }}
-    >
-     <Typography>No Results</Typography>
-      
-
-  
-    </Box>
+    {/*Results*/}
+    <Results results={results || []} updateResults={setResults} search={handleSearch} homeState={stateVals} homeSetters = {setters}/>
     </Container>
     );
 }
