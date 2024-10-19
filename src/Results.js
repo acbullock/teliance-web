@@ -32,8 +32,8 @@ const paginationModel = { page: 0, pageSize: 10 };
 export default function Results(props) {
 
   return (
-    <Container maxWidth={false} sx={{mt:5,}}>
-      <Grid container spacing={2}>
+    <Container maxWidth={false} sx={{mt:5}}>
+      <Grid container spacing={2} >
         <Grid item md={12} lg={4}>
           <Box component="section" 
           justifyContent="center"
@@ -49,16 +49,16 @@ export default function Results(props) {
           justifyContent="center"
           alignItems="center"
           maxWidth="md"
-
           style={{ height: '80%',  width: '100%' }}
           >
+          <Typography variant="h4">Results</Typography>
            <DataGrid
 
             rows={props.results.length > 0 ? props.results : []}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[5, 10]}
-            sx={{ mt: 10 }}
+          
 
         />
           </Box>
