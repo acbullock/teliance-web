@@ -1,20 +1,8 @@
-import { Typography, Container, Grid, Stack, Button } from '@mui/material'; 
-import { styled } from '@mui/material/styles';
+import { Typography, Container, Grid, Button } from '@mui/material'; 
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 import Filters from "./Filters"
 import { DataGrid } from '@mui/x-data-grid';
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-  ...theme.applyStyles('dark', {
-    backgroundColor: '#1A2027',
-  }),
-}));
 const columns = [
   { field: 'number', headerName: 'Phone Number', width: 200, flex:1, align: "center", headerAlign: 'center', headerClassName: "primary" , renderCell: (params)=>{
     return <Typography variant="h6">{params.value}</Typography>
@@ -22,7 +10,7 @@ const columns = [
    { field: 'region', headerName: 'State', width: 150 , flex:1, align: "center", headerAlign: 'center', renderCell: (params)=>{
     return <Typography variant="h6">{params.value}</Typography>
    }},
-  { field: 'price', headerName: 'Price', width: 50, flex:1, align: "center", headerAlign: 'center',renderCell: (params)=>{
+  { field: 'price', headerName: 'Price', width: 50, flex:1, align: "center", headerAlign: 'center',sortComparator: (v1, v2) => parseFloat(v1.replace("$", "")) - parseFloat(v2.replace("$", "")), renderCell: (params)=>{
     return <Button variant="outlined"><Typography variant="h6">{params.value}</Typography></Button>
 
   }},
