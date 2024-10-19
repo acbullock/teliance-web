@@ -39,7 +39,7 @@ export default function Results(props) {
           style={{ height: '60%',  width: '100%' }}
            maxWidth="md"
           >
-          <Typography variant="h4">Results</Typography>
+          <Typography variant="h5" sx={{ fontWeight: 'bold' }}>Results</Typography>
            <DataGrid
 
             rows={props.results.length > 0 ? props.results : []}

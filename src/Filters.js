@@ -106,7 +106,7 @@ export default function Filters(props) {
   return (
     <Container maxWidth={false}>
     <Box spacing={2} >
-     <Typography variant="h4">Filters</Typography>
+     <Typography variant="h5" sx={{ fontWeight: 'bold' }}>Filters</Typography>
      <Accordion > 
         <AccordionSummary
           expandIcon={<ArrowDropDownIcon />}

@@ -353,7 +353,7 @@ export default function Home() {
           alt="Exclusive Digits"
           loading="lazy"
         />
-        <Typography variant="h2">Exclusive Digits</Typography>
+        <Typography variant="h3" sx={{ fontWeight: 'bold' }}>Exclusive Digits</Typography>
         <Typography variant="h6">Pricing for Every Business</Typography>
       </Box>
       <Box
