@@ -359,7 +359,7 @@ export default function Home() {
         <Typography variant="h3" sx={{ fontWeight: 'bold' }}>Exclusive Digits</Typography>
         <Typography variant="h6">Pricing for Every Business</Typography>
       </Box>
-       <Card elevation={3} sx={{width: "50%", overflow: 'visible'}}>
+       <Card elevation={3} sx={{ overflow: 'visible',m:3}}>
       <CardContent>
       <Box
       component="form"
