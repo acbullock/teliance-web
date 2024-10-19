@@ -10,6 +10,8 @@ import {
   Button,
   MenuItem,
   Stack,
+  Autocomplete,
+  TextField,
   // List,
   // ListItem,
   // IconButton,
@@ -186,7 +188,7 @@ export default function Home() {
 
   }
   const handleChangeAreaCode = (event) => {
-    let value = event.target.value.substring(0,3)
+    let value = event.target.innerText && event.target.innerText.substring(0,3) || ""
     if (value.length === 3) {
       let ar = acRegions.find((ac)=>ac.area_code === value)|| {area_code: value, region: "NA"}
       setState(ar.region)
@@ -200,9 +202,10 @@ export default function Home() {
     setSearch(event.target.value.substring(0, 7));
   };
   const handleChangeState = (event) => {
-      setState(event.target.value);
-      if (event.target.value){
-        let filteredAreaCodes = acRegions.filter(ac=>ac.region === event.target.value).map(a=>a.area_code).sort((a,b)=>a-b)
+      let value = event.target.innerText
+      setState(value);
+      if (value){
+        let filteredAreaCodes = acRegions.filter(ac=>ac.region === value).map(a=>a.area_code).sort((a,b)=>a-b)
         setAreaCodes(filteredAreaCodes)
       }
       else{
@@ -256,38 +259,32 @@ export default function Home() {
       noValidate
       autoComplete="off" 
       >
-      <FormControl sx={{width: "10ch"}} error={error}>
-        <InputLabel id="demo-simple-select-label">State</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
+      <FormControl sx={{width: "15ch"}} >
+        <Autocomplete
+          disablePortal
+          options={states}
+          value={state}
           id="state"
           onChange={handleChangeState}
-          value={state}
           label="State"
           defaultValue=""
-        >
-        <MenuItem key="" value="">Select One..</MenuItem>
-        {states && states.map((item) => (
-          <MenuItem key={item} value={item}>{item}</MenuItem>
-        ))}
-        </Select>
+          renderInput={(params) => <TextField error={error} {...params} label="State" />}
+        />
       </FormControl>
-      <FormControl sx={{width: "10ch"}} error={error}>
-        <InputLabel id="demo-simple-select-label">Area Code</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
+      <FormControl sx={{width: "15ch"}} >
+        <Autocomplete
+        error={error}
+          disablePortal
+          options={areaCodes}
+          value={areaCode}
           id="areaCode"
           onChange={handleChangeAreaCode}
-          value={areaCode}
           label="Area Code"
           defaultValue=""
-        >
-        <MenuItem key="" value="">Select One..</MenuItem>
-        {areaCodes && areaCodes.map((item) => (
-          <MenuItem key={item} value={item}>{item}</MenuItem>
-        ))}
-        </Select>
+          renderInput={(params) => <TextField error={error} {...params} label="Area Code" />}
+        />
       </FormControl>
+      
       <FormControl sx={{width: "20ch"}} error={error}>
       <OutlinedInput placeholder="Search" value={search.trim()} inputProps={ariaLabel} onChange={handleChangeSearch}/>
       </FormControl>
