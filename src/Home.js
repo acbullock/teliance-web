@@ -77,7 +77,7 @@ export default function Home() {
   const [xyxxxxx, setXYXXXXX] = React.useState(false)
   const [doubleAreaCode, setDoubleAreaCode] = React.useState(false)
   const [tripleAreaCode, setTripleAreaCode] = React.useState(false)
-
+  const [price, setPrice] = React.useState([0,75000])
   const stateVals = {
     repeater,
     xxxx,
@@ -98,6 +98,7 @@ export default function Home() {
     xyxxxxx,
     doubleAreaCode,
     tripleAreaCode,
+    price
   };
   const setters = {
     setRepeater,
@@ -119,6 +120,7 @@ export default function Home() {
     setXYXXXXX,
     setDoubleAreaCode,
     setTripleAreaCode,
+    setPrice
   }
 
   const wordToNumbers = (str) => {
@@ -142,6 +144,7 @@ export default function Home() {
     setType("contains")
     setResults([])
   }
+
   const handleSearch = async () => {
     let query = ""
     if (!state && !areaCode && !search) {
