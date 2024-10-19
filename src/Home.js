@@ -30,7 +30,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import Results from "./Results"
 const ariaLabel = { 'aria-label': 'description' };
 
-const paginationModel = { page: 0, pageSize: 5 };
+const paginationModel = { page: 0, pageSize: 10 };
 
 const columns = [
   { field: 'number', headerName: 'Phone Number', width: 200, flex:1, align: "center", headerAlign: 'center', headerClassName: "primary" },
@@ -143,6 +143,26 @@ export default function Home() {
     setSearch("")
     setType("contains")
     setResults([])
+    setPrice([0,75000])
+    setRepeater(false)
+    setXXXX(false)
+    setX0X0(false)
+    setAscending(false)
+    setDescending(false)
+    setMillion(false)
+    setXY00(false)
+    setXXXXX(false)
+    setXXXXXXY(false)
+    setXYYYYYY(false)
+    setXY00000(false)
+    setXYXYXY(false)
+    setXXXYYYY(false)
+    setX00Y000(false)
+    setX00X000(false)
+    setThousand(false)
+    setXYXXXXX(false)
+    setDoubleAreaCode(false)
+    setTripleAreaCode(false)
   }
 
   const handleSearch = async () => {

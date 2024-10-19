@@ -57,7 +57,7 @@ export default function Results(props) {
             rows={props.results.length > 0 ? props.results : []}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
-            pageSizeOptions={[5, 10]}
+            pageSizeOptions={[10, 25, 50]}
           
 
         />
