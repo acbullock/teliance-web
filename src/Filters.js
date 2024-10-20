@@ -117,7 +117,7 @@ export default function Filters(props) {
         </AccordionSummary>
         <AccordionDetails sx={{mt:5}}>
           <Grid container spacing={2} direction="row">
-            <Grid item  md={6}>
+            <Grid item  lg={6}>
             <Box component="section" 
             justifyContent="center"
             alignItems="center"
@@ -137,7 +137,7 @@ export default function Filters(props) {
               </FormGroup>
             </Box>
           </Grid>
-          <Grid item  md={6}>
+          <Grid item  lg={6}>
             <Box component="section" 
             justifyContent="center"
             alignItems="center"

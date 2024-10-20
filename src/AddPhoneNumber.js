@@ -17,10 +17,11 @@ import {
   Button,
   Grid,
   Alert,
-  Collapse
+  Collapse,
 } from '@mui/material'; 
 export default function AddPhoneNumber(props) {
-  const [error, setError] = React.useState(false)
+  const [numberError, setNumberError] = React.useState(false)
+  const [priceError, setPriceError] = React.useState(false)
   const [number, setNumber] = React.useState("")
   const [price, setPrice] = React.useState("")
   const [state, setState] = React.useState("")
@@ -30,11 +31,18 @@ export default function AddPhoneNumber(props) {
   const [openSuccessAlert, setOpenSuccessAlert] = React.useState(false)
 
   const handleSubmit = async () => {
-    if (isNaN(parseFloat(price)) || number.length !== 10 || isNaN(parseInt(number))){
-      setError(true)
+    if (isNaN(parseFloat(price))){
+      setPriceError(true)
+      return
+    }
+    else{
+      setPriceError(false)
+    }
+    if( number.length !== 10 || isNaN(parseInt(number))){
+      setNumberError(true)
       return;
     }
-    setError(false)
+    setNumberError(false)
     let numberObj = {
       area_code: number.substring(0,3),
       region: state,
@@ -122,60 +130,69 @@ export default function AddPhoneNumber(props) {
     <Container maxWidth={false} sx={{mt:1}}  align="center">
     <Grid container spacing={2} justifyContent="center">
       <Grid item xs={12}>
-        <Card elevation={2} sx={{ overflow: 'visible'}}>
+        <Card elevation={5} sx={{
+          overflow: 'visible',
+          width: {
+            sm: '100%',  // 75% width on small screens
+            md: '80%',  // 50% width on medium screens
+            lg: '70%',  // 40% width on large screens
+            xl: '60%',  // 30% width on extra-large screens
+          },
+          mx: 'auto', // Center horizontally
+          mt: 2, // Add margin on top
+        }}>
           <CardContent>
             <Box display="flex" flexDirection="column"  gap={2} justifyContent="center" sx={{width:'100%'}}>
               <Typography variant="h5" sx={{ fontWeight: 'bold', mb:3 }}>Add Phone Number</Typography>
-              <Box  sx={{mb:2}}>
-                <FormControl onChange={handleNumberChange} error={error}>
+              <Box sx={{mb:2}}>
+                <FormControl onChange={handleNumberChange} error={numberError}>
                   <FormLabel>Number</FormLabel>
-                  <Input value={number}/>
+                  <Input sx={{width:'35ch'}} value={number}/>
                   <FormHelperText>10 digits, no symbols</FormHelperText>
                 </FormControl>
               </Box>
               <Box  sx={{mb:2}}>
-                <FormControl onChange={handlePriceChange}error={error}>
+                <FormControl onChange={handlePriceChange}error={priceError}>
                   <FormLabel>Price</FormLabel>
-                  <Input value={price}/>
+                  <Input value={price} sx={{width:'35ch'}}/>
                 </FormControl>
               </Box>
-          <Box  sx={{mb:2}}>
-          <FormControl  >
-            <Autocomplete
-            disabled
-              disablePortal
-              options={props.appStates.states}
-              value={state}
-              id="state"
-              onChange={handleStateChange}
-              label="State"
-              defaultValue=""
-              renderInput={(params) => <TextField {...params} label="State" />}
-            />
-          </FormControl>
-          </Box>
-          <Box  sx={{mb:2}}>
-          <FormControl value={available}>
-            <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
-              defaultValue="available"
-              name="radio-buttons-group"
-              onChange={handleAvailableChange}
-            >
-              <FormControlLabel value="available" control={<Radio />} label="Available" />
-              <FormControlLabel value="Unavailable" control={<Radio />} label="Unavailable" />
-            </RadioGroup>
-          </FormControl>
-          </Box>
-           <Box  sx={{mb:2}}>
-           <Button variant="contained" onClick={handleSubmit}>Add Number</Button>
-           
-           <Collapse in={openAlreadyThereAlert} >
-              <Alert onClose={()=>{setOpenAlreadyThereAlert(false)}} severity="warning" sx={{mt: 3}}>
-                Number already exists in system.
-              </Alert>
-            </Collapse>
-            <Collapse in={openErrorAlert} >
+            <Box  sx={{mb:2}}>
+            <FormControl  >
+              <Autocomplete
+              disabled
+                disablePortal
+                options={props.appStates.states}
+                value={state}
+                id="state"
+                onChange={handleStateChange}
+                label="State"
+                defaultValue=""
+                renderInput={(params) => <TextField {...params} sx={{width:'35ch'}} label="State" />}
+              />
+            </FormControl>
+            </Box>
+            <Box  sx={{mb:2}}>
+            <FormControl value={available}>
+              <RadioGroup
+                aria-labelledby="demo-radio-buttons-group-label"
+                defaultValue="available"
+                name="radio-buttons-group"
+                onChange={handleAvailableChange}
+              >
+                <FormControlLabel value="available" control={<Radio />} label="Available" />
+                <FormControlLabel value="Unavailable" control={<Radio />} label="Unavailable" />
+              </RadioGroup>
+            </FormControl>
+            </Box>
+            <Box  sx={{mb:2}}>
+            <Button variant="contained" onClick={handleSubmit}>Add Number</Button>
+            <Collapse in={openAlreadyThereAlert} >
+               <Alert onClose={()=>{setOpenAlreadyThereAlert(false)}} severity="warning" sx={{mt: 3}}>
+                 Number already exists in system.
+               </Alert>
+             </Collapse>
+             <Collapse in={openErrorAlert} >
               <Alert onClose={()=>{setOpenErrorAlert(false)}} severity="error" sx={{mt: 3}}>
                 Something went wrong.
               </Alert>

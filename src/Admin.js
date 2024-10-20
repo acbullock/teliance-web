@@ -1,6 +1,7 @@
 import React from "react";
 import { Typography, Container, Tabs, Tab,Box } from '@mui/material'; 
 import AddPhoneNumber from "./AddPhoneNumber"
+import EditPhoneNumber from "./EditPhoneNumber"
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -45,7 +46,7 @@ const [currentTab, setCurrentTab] = React.useState(0);
           <AddPhoneNumber appStates={props.appStates} appSetters={props.appSetters}/>
         </CustomTabPanel>
         <CustomTabPanel value={currentTab} index={1}>
-          Edit Number..
+          <EditPhoneNumber appStates={props.appStates} appSetters={props.appSetters}/>
         </CustomTabPanel>
         <CustomTabPanel value={currentTab} index={2}>
           CSV Import..
