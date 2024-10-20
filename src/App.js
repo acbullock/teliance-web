@@ -49,7 +49,7 @@ export default function App() {
       <Box sx={{p:2}}>
         <AppBar>
         <Toolbar>
-        <Stack direction="row" spacing={2} >
+        <Stack direction="row" spacing={2} gap={1}>
          <Switch {...label} checked={!darkMode} onChange={toggleDark} color="alernate"/>
         <Link to="/" style={{ textDecoration: 'none', color: 'primary' }}>
               <Typography variant="h5" sx={{color: !darkMode? "primary2.main": "primary.main"}}>Home</Typography>

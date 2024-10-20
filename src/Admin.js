@@ -1,5 +1,6 @@
 import React from "react";
 import { Typography, Container, Tabs, Tab,Box } from '@mui/material'; 
+import AddPhoneNumber from "./AddPhoneNumber"
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -41,7 +42,7 @@ const [currentTab, setCurrentTab] = React.useState(0);
           </Tabs>
         </Box>
         <CustomTabPanel value={currentTab} index={0}>
-          Add Number..
+          <AddPhoneNumber />
         </CustomTabPanel>
         <CustomTabPanel value={currentTab} index={1}>
           Edit Number..
