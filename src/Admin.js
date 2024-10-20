@@ -16,7 +16,7 @@ function CustomTabPanel(props) {
     </div>
   );
 }
-export default function Admin() {
+export default function Admin(props) {
 const [currentTab, setCurrentTab] = React.useState(0);
 
   const handleChangeTab = (event, newValue) => {
@@ -42,7 +42,7 @@ const [currentTab, setCurrentTab] = React.useState(0);
           </Tabs>
         </Box>
         <CustomTabPanel value={currentTab} index={0}>
-          <AddPhoneNumber />
+          <AddPhoneNumber appStates={props.appStates} appSetters={props.appSetters}/>
         </CustomTabPanel>
         <CustomTabPanel value={currentTab} index={1}>
           Edit Number..

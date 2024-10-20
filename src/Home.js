@@ -35,12 +35,9 @@ const ariaLabel = { 'aria-label': 'description' };
 
 
 
-export default function Home() {
+export default function Home(props) {
   const [error, setError] = React.useState(false);
   const [type, setType] = React.useState("contains");
-  const [acRegions, setAcRegions] = React.useState('');
-  const [states, setStates] = React.useState([]);
-  const [areaCodes, setAreaCodes] = React.useState([]);
   const [state, setState] = React.useState('');
   const [areaCode, setAreaCode] = React.useState('');
   const [search, setSearch] = React.useState('');
@@ -295,7 +292,7 @@ export default function Home() {
   const handleChangeAreaCode = (event) => {
     let value = (event.target.innerText && event.target.innerText.substring(0,3)) || ""
     if (value.length === 3) {
-      let ar = acRegions.find((ac)=>ac.area_code === value)|| {area_code: value, region: "NA"}
+      let ar = props.appStates.acRegions.find((ac)=>ac.area_code === value)|| {area_code: value, region: "NA"}
       setState(ar.region)
     }
     setAreaCode(value);
@@ -309,40 +306,18 @@ export default function Home() {
   const handleChangeState = (event) => {
       let value = event.target.innerText
       setState(value);
+      setAreaCode("")
       if (value){
-        let filteredAreaCodes = acRegions.filter(ac=>ac.region === value).map(a=>a.area_code).sort((a,b)=>a-b)
-        setAreaCodes(filteredAreaCodes)
+        let filteredAreaCodes = props.appStates.acRegions.filter(ac=>ac.region === value).map(a=>a.area_code).sort((a,b)=>a-b)
+        props.appSetters.setAreaCodes(filteredAreaCodes)
       }
       else{
-        let areaCodes = acRegions.map(d=>d.area_code);
+        let areaCodes = props.appStates.acRegions.map(d=>d.area_code);
         areaCodes = Array.from(new Set(areaCodes)).sort((a,b)=>a-b)
-        setAreaCodes(areaCodes);
+        props.appSetters.setAreaCodes(areaCodes);
       }
       
     };
-  // Similar to componentDidMount and componentDidUpdate:
-  React.useEffect(() => {
-    // Update the document title using the browser API
-    document.title = `Exclusive Digits - Phone Number Search`;
-    //get area codes..
-    if (!acRegions){
-      fetch("https://eddb.teliance.com/api/phone-numbers/areaCodeWithRegions").then(result=>{
-      result.json().then(data => {
-        setAcRegions(data);
-        let states = data.map(d=>d.region);
-        states = Array.from(new Set(states)).sort((a,b)=>a-b)
-        setStates(states);
-        let areaCodes = data.map(d=>d.area_code);
-        areaCodes = Array.from(new Set(areaCodes)).sort((a,b)=>a-b)
-        setAreaCodes(areaCodes);
-      })
-      
-    })
-    }
-    
-
-
-  });
 
 
   return (
@@ -370,7 +345,7 @@ export default function Home() {
       <FormControl sx={{width: "15ch"}} >
         <Autocomplete
           disablePortal
-          options={states}
+          options={props.appStates.states}
           value={state}
           id="state"
           onChange={handleChangeState}
@@ -382,7 +357,7 @@ export default function Home() {
       <FormControl sx={{width: "15ch"}} >
         <Autocomplete
           disablePortal
-          options={areaCodes}
+          options={props.appStates.areaCodes}
           value={areaCode}
           id="areaCode"
           onChange={handleChangeAreaCode}

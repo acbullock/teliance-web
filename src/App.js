@@ -11,7 +11,7 @@ import {
   Box,
   AppBar,
   Toolbar,
-  Typography, Button
+  Typography
 } from '@mui/material'; 
 import Home from "./Home"
 import Search from "./Search"
@@ -37,10 +37,47 @@ const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 export default function App() {
   
-  const [darkMode, setDarkMode] = React.useState(false)
+  const [darkMode, setDarkMode] = React.useState(true)
+  const [acRegions, setAcRegions] = React.useState(false)
+  const [states, setStates] = React.useState([])
+  const [areaCodes, setAreaCodes] = React.useState([])
+
+  const appStates = {
+    states,
+    acRegions,
+    areaCodes
+  }
+  const appSetters = {
+    setAreaCodes,
+    setStates,
+    setAcRegions
+  }
   const toggleDark = ()=>{
     setDarkMode(!darkMode)
   }
+  // Similar to componentDidMount and componentDidUpdate:
+  React.useEffect(() => {
+    // Update the document title using the browser API
+    document.title = `Exclusive Digits - Phone Number Search`;
+    //get area codes..
+    if (!acRegions){
+      fetch("https://eddb.teliance.com/api/phone-numbers/areaCodeWithRegions").then(result=>{
+      result.json().then(data => {
+        setAcRegions(data);
+        let states = data.map(d=>d.region);
+        states = Array.from(new Set(states)).sort((a,b)=>a-b)
+        setStates(states);
+        let areaCodes = data.map(d=>d.area_code);
+        areaCodes = Array.from(new Set(areaCodes)).sort((a,b)=>a-b)
+        setAreaCodes(areaCodes);
+      })
+      
+    })
+    }
+    
+
+
+  });
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
     <CssBaseline />
@@ -65,9 +102,9 @@ export default function App() {
         </Toolbar>
         </AppBar>
         <Routes>
-          <Route exact path="/" element={<Home/>} />
+          <Route exact path="/" element={<Home appSetters={appSetters} appStates={appStates}/>} />
           <Route path="/search" element={<Search/>} />
-          <Route path="/admin" element={<Admin />} />
+          <Route path="/admin" element={<Admin appSetters={appSetters} appStates={appStates}/>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         </Box>
