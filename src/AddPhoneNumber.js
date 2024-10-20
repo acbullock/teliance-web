@@ -16,17 +16,89 @@ import {
   FormControlLabel,
   Button,
   Grid,
+  Alert,
+  Collapse
 } from '@mui/material'; 
 export default function AddPhoneNumber(props) {
   const [error, setError] = React.useState(false)
   const [number, setNumber] = React.useState("")
   const [price, setPrice] = React.useState("")
   const [state, setState] = React.useState("")
+  const [available, setAvailable] = React.useState("available")
+  const [openAlreadyThereAlert, setOpenAlreadyThereAlert] = React.useState(false)
+  const [openErrorAlert, setOpenErrorAlert] = React.useState(false)
+  const [openSuccessAlert, setOpenSuccessAlert] = React.useState(false)
+
+  const handleSubmit = async () => {
+    if (isNaN(parseFloat(price)) || number.length !== 10 || isNaN(parseInt(number))){
+      setError(true)
+      return;
+    }
+    setError(false)
+    let numberObj = {
+      area_code: number.substring(0,3),
+      region: state,
+      number: number,
+      price: price,
+      available: available === "available" ? 1 : 0,
+      source: "teliance"
+    }
+    console.log(numberObj)
+    //see if number exists..
+    try{
+      let found = await fetch(`https://eddb.teliance.com/api/phone-numbers/filter?areaCode=${number.substring(0,3)}&searchString=${number.substring(3)}`)
+      if(found.ok) {
+        found = await found.json()
+        console.log(found, "really found")
+        setOpenAlreadyThereAlert(true)
+        setNumber("")
+        setPrice("")
+        setState("")
+        setAvailable("available")
+        return
+      }
+      
+    }
+    catch(e){
+      console.log("number not currently in system")
+    }
+    console.log("adding number now..")
+    //add number..
+    try{
+      const response = await fetch("https://eddb.teliance.com/api/phone-numbers/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"  // Set the content type to application/json
+        },
+        body: JSON.stringify(numberObj)  // Stringify your object
+      });
+
+      if (!response.ok) {
+        // Handle errors
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+
+      const data = await response.json();  // Parse the JSON response
+      console.log(data);  // Log the response or do something with it
+      setOpenSuccessAlert(true)
+      setNumber("")
+      setPrice("")
+      setState("")
+      setAvailable("available")
+      
+    }
+    catch(e){
+      setOpenErrorAlert(true)
+    }
+  }
 
   const findStateFromAreaCode=(npa)=>props.appStates.acRegions.find(ac=>ac.area_code === npa.substring(0,3))?.region || "NA"
-
+  const handleAvailableChange = (event) => {
+    let {value} = event.target;
+    setAvailable(value)
+  }
   const handleNumberChange = (event) => {
-    // setError(true)
+    
     let {value} = event.target
     value = value.replace(/[^0-9]+/g, "").substring(0,10)
     setNumber(value)
@@ -43,7 +115,7 @@ export default function AddPhoneNumber(props) {
   }
   const handlePriceChange = (event) =>{
     let {value} = event.target;
-    setPrice(value.replace(/[^0-9]+/g, "").substring(0,8));
+    setPrice(value.replace(/[^\d.]|(?<=\..*)\./, "").substring(0,8));
   }
   
   return (
@@ -55,14 +127,14 @@ export default function AddPhoneNumber(props) {
             <Box display="flex" flexDirection="column"  gap={2} justifyContent="center" sx={{width:'100%'}}>
               <Typography variant="h5" sx={{ fontWeight: 'bold', mb:3 }}>Add Phone Number</Typography>
               <Box  sx={{mb:2}}>
-                <FormControl onChange={handleNumberChange}>
+                <FormControl onChange={handleNumberChange} error={error}>
                   <FormLabel>Number</FormLabel>
                   <Input value={number}/>
                   <FormHelperText>10 digits, no symbols</FormHelperText>
                 </FormControl>
               </Box>
               <Box  sx={{mb:2}}>
-                <FormControl onChange={handlePriceChange} >
+                <FormControl onChange={handlePriceChange}error={error}>
                   <FormLabel>Price</FormLabel>
                   <Input value={price}/>
                 </FormControl>
@@ -78,16 +150,17 @@ export default function AddPhoneNumber(props) {
               onChange={handleStateChange}
               label="State"
               defaultValue=""
-              renderInput={(params) => <TextField error={error} {...params} label="State" />}
+              renderInput={(params) => <TextField {...params} label="State" />}
             />
           </FormControl>
           </Box>
           <Box  sx={{mb:2}}>
-          <FormControl>
+          <FormControl value={available}>
             <RadioGroup
               aria-labelledby="demo-radio-buttons-group-label"
-              defaultValue="female"
+              defaultValue="available"
               name="radio-buttons-group"
+              onChange={handleAvailableChange}
             >
               <FormControlLabel value="available" control={<Radio />} label="Available" />
               <FormControlLabel value="Unavailable" control={<Radio />} label="Unavailable" />
@@ -95,7 +168,23 @@ export default function AddPhoneNumber(props) {
           </FormControl>
           </Box>
            <Box  sx={{mb:2}}>
-           <Button variant="contained">Add Number</Button>
+           <Button variant="contained" onClick={handleSubmit}>Add Number</Button>
+           
+           <Collapse in={openAlreadyThereAlert} >
+              <Alert onClose={()=>{setOpenAlreadyThereAlert(false)}} severity="warning" sx={{mt: 3}}>
+                Number already exists in system.
+              </Alert>
+            </Collapse>
+            <Collapse in={openErrorAlert} >
+              <Alert onClose={()=>{setOpenErrorAlert(false)}} severity="error" sx={{mt: 3}}>
+                Something went wrong.
+              </Alert>
+            </Collapse>
+            <Collapse in={openSuccessAlert} >
+              <Alert onClose={()=>{setOpenSuccessAlert(false)}} severity="success" sx={{mt: 3}}>
+                Number Added Successfully!
+              </Alert>
+            </Collapse>
            </Box>
         </Box>
           </CardContent>
