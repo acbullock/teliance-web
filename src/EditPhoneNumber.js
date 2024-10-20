@@ -253,7 +253,7 @@ export default function EditPhoneNumber(props) {
                     
                     <Box sx={{mb:2}}>
                     
-                    <Button variant="contained" disabled={loading} ><Typography variant="h6" onClick={handleUpdate}>Update</Typography></Button>
+                    <Button variant="contained" disabled={loading}><Typography variant="h6" onClick={handleUpdate}>Update</Typography></Button>
                     </Box>
                     
 

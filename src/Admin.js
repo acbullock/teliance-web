@@ -2,6 +2,7 @@ import React from "react";
 import { Typography, Container, Tabs, Tab,Box } from '@mui/material'; 
 import AddPhoneNumber from "./AddPhoneNumber"
 import EditPhoneNumber from "./EditPhoneNumber"
+import RingBoost from "./RingBoost"
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -36,10 +37,10 @@ const [currentTab, setCurrentTab] = React.useState(0);
       <Box sx={{ width: '100%', mt: 5 }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs variant="scrollable" value={currentTab} onChange={handleChangeTab} aria-label="admin tabs">
-            <Tab label="Add Number" {...a11yProps(0)} />
-            <Tab label="Edit Number" {...a11yProps(1)} />
-            <Tab label="CSV Import" {...a11yProps(2)} />
-            <Tab label="RingBoost" {...a11yProps(3)} />
+            <Tab label="Add Number" {...a11yProps(0)} sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}/>
+            <Tab label="Edit Number" {...a11yProps(1)}  sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}/>
+            <Tab label="CSV Import" {...a11yProps(2)}  sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}/>
+            <Tab label="RingBoost" {...a11yProps(3)}  sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}/>
           </Tabs>
         </Box>
         <CustomTabPanel value={currentTab} index={0}>
@@ -52,7 +53,7 @@ const [currentTab, setCurrentTab] = React.useState(0);
           CSV Import..
         </CustomTabPanel>
         <CustomTabPanel value={currentTab} index={3}>
-          RingBoost..
+          <RingBoost />
         </CustomTabPanel>
       </Box>
     </Container>
