@@ -147,14 +147,14 @@ export default function AddPhoneNumber(props) {
               <Box sx={{mb:2}}>
                 <FormControl onChange={handleNumberChange} error={numberError}>
                   <FormLabel>Number</FormLabel>
-                  <Input sx={{width:'35ch'}} value={number}/>
+                  <Input value={number}/>
                   <FormHelperText>10 digits, no symbols</FormHelperText>
                 </FormControl>
               </Box>
               <Box  sx={{mb:2}}>
                 <FormControl onChange={handlePriceChange}error={priceError}>
                   <FormLabel>Price</FormLabel>
-                  <Input value={price} sx={{width:'35ch'}}/>
+                  <Input value={price} />
                 </FormControl>
               </Box>
             <Box  sx={{mb:2}}>
@@ -168,7 +168,7 @@ export default function AddPhoneNumber(props) {
                 onChange={handleStateChange}
                 label="State"
                 defaultValue=""
-                renderInput={(params) => <TextField {...params} sx={{width:'35ch'}} label="State" />}
+                renderInput={(params) => <TextField {...params}  label="State" />}
               />
             </FormControl>
             </Box>
