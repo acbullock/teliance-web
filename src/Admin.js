@@ -16,10 +16,10 @@ function CustomTabPanel(props) {
   );
 }
 export default function Admin() {
-const [value, setValue] = React.useState(0);
+const [currentTab, setCurrentTab] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const handleChangeTab = (event, newValue) => {
+    setCurrentTab(newValue);
   };
   function a11yProps(index) {
   return {
@@ -33,23 +33,23 @@ const [value, setValue] = React.useState(0);
         
       <Box sx={{ width: '100%', mt: 5 }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+          <Tabs variant="scrollable" value={currentTab} onChange={handleChangeTab} aria-label="admin tabs">
             <Tab label="Add Number" {...a11yProps(0)} />
             <Tab label="Edit Number" {...a11yProps(1)} />
             <Tab label="CSV Import" {...a11yProps(2)} />
             <Tab label="RingBoost" {...a11yProps(3)} />
           </Tabs>
         </Box>
-        <CustomTabPanel value={value} index={0}>
+        <CustomTabPanel value={currentTab} index={0}>
           Add Number..
         </CustomTabPanel>
-        <CustomTabPanel value={value} index={1}>
+        <CustomTabPanel value={currentTab} index={1}>
           Edit Number..
         </CustomTabPanel>
-        <CustomTabPanel value={value} index={2}>
-          Item Three
+        <CustomTabPanel value={currentTab} index={2}>
+          CSV Import..
         </CustomTabPanel>
-        <CustomTabPanel value={value} index={3}>
+        <CustomTabPanel value={currentTab} index={3}>
           RingBoost..
         </CustomTabPanel>
       </Box>
