@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/teliance-web/static/css/main.e6c13ad2.css",
-    "main.js": "/teliance-web/static/js/main.a78b602e.js",
+    "main.js": "/teliance-web/static/js/main.61e3ea90.js",
     "static/js/453.0b4f0a97.chunk.js": "/teliance-web/static/js/453.0b4f0a97.chunk.js",
     "index.html": "/teliance-web/index.html",
     "main.e6c13ad2.css.map": "/teliance-web/static/css/main.e6c13ad2.css.map",
-    "main.a78b602e.js.map": "/teliance-web/static/js/main.a78b602e.js.map",
+    "main.61e3ea90.js.map": "/teliance-web/static/js/main.61e3ea90.js.map",
     "453.0b4f0a97.chunk.js.map": "/teliance-web/static/js/453.0b4f0a97.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.a78b602e.js"
+    "static/js/main.61e3ea90.js"
   ]
 }
