@@ -14,18 +14,20 @@ import {
   RadioGroup,
   Radio,
   FormControlLabel,
-  Collapse,Alert
+  Collapse,
+  CircularProgress,
+  Alert
 } from '@mui/material'; 
 
 const ariaLabel = { 'aria-label': 'description' };
 
 
-export default function EditPhoneNumber() {
+export default function EditPhoneNumber(props) {
   const [search, setSearch] = React.useState("")
   const [searchError, setSearchError] = React.useState(false)
   const [results, setResults] = React.useState([])
   const [selected, setSelected] = React.useState("")
-
+  const [loading, setLoading] = React.useState(false)
   //edit vals
   const [numberError, setNumberError] = React.useState(false)
   const [number, setNumber]= React.useState("")
@@ -36,25 +38,85 @@ export default function EditPhoneNumber() {
   const [successAlert, setSuccessAlert] = React.useState(false)
 
   const handleUpdate= async ()=>{
-    if (isNaN(parseInt(number)) || number.length !== 10) {
+    setLoading(true)
+    if(!selected) {
+      setLoading(false)
+      return
+    }
+    setNumberError(false)
+    setPriceError(false)
+    
+    let phoneRegex = new RegExp(/^\d\d\d\d\d\d\d\d\d\d$/)
+    if (!phoneRegex.test(number)) {
       setNumberError(true)
       return;
     }
-    if (isNaN(parseFloat(price))) {
+    if (isNaN(parseFloat(price)) || !parseFloat(price)){
       setPriceError(true)
+      setLoading(false)
       return;
     }
-    setSuccessAlert(true)
+
+    //get number we are updating..
+    let found = await fetch(`https://eddb.teliance.com/api/phone-numbers/filter?areaCode=${selected.substring(0,3)}&searchString=${selected.substring(3)}`)
+    found = await found.json()
+    found = found[0]
+    
+    let updateId = found.id;
+    let updateRegion = props.appStates.acRegions.find(ac=>ac.area_code === number.substring(0,3)).region
+    let updateNumber = number;
+    let updatePrice = price;
+    let updateAvailable = available === "available" ? 1: 0;
+    let newAreaCode = number.substring(0,3)
+    let update={
+      id: updateId,
+      available: updateAvailable,
+      price: updatePrice,
+      number: updateNumber,
+      area_code: newAreaCode,
+      region: updateRegion
+
+    }
+    try{
+      const response = await fetch("https://eddb.teliance.com/api/phone-numbers/updatePhoneNumber", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"  // Set the content type to application/json
+        },
+        body: JSON.stringify(update)  // Stringify your object
+      });
+      if(response.ok) {
+        setSuccessAlert(true)
+      }
+      let results = await response.json()
+      console.log(results)
+      setNumber("")
+      setPrice("")
+      setAvailable("available")
+      setSelected("")
+      setResults([])
+      setLoading(false)
+      return;
+
+    }
+    catch(e){
+      console.log(e)
+    }
+    setLoading(false)
+    return
+    
+    
 
   }
   const handleNumberChange = (event)=>{
     let value = event.target.value;
+    value = value.replace(/[^0-9]+/g, "").substring(0,10)
     setNumber(value)
   }
 
   const handlePriceChange = (event)=>{
     let value = event.target.value;
-    setPrice(value)
+    setPrice(value.replace(/[^\d.]|(?<=\..*)\./, "").substring(0,8));
   }
 
   const handleAvailableChange = (event)=>{
@@ -66,6 +128,8 @@ export default function EditPhoneNumber() {
     setSearch(value.replace(/[^0-9]+/g, "").substring(0,10))
   }
   const handleSelectedChange = async (event)=>{
+    setNumberError(false)
+    setPriceError(false)
     let value = event.target.innerText;
     setSelected(value)
     setNumber(value)
@@ -103,7 +167,7 @@ export default function EditPhoneNumber() {
     <Container maxWidth={false} sx={{mt:10}}>
     <Collapse in={successAlert} >
                <Alert onClose={()=>setSuccessAlert(false)} severity="success" sx={{m: 3}}>
-                 Number already exists in system.
+                 Update Successful!
                </Alert>
             
              
@@ -154,9 +218,9 @@ export default function EditPhoneNumber() {
           </Grid>
         </Grid>
         <Grid item md={6} align="center" >
-          <Card elevation={4} sx={{height: 516}}>
+          <Card elevation={4} sx={{height: 516}} >
             <CardContent>
-              <Typography variant="h5" sx={{ fontWeight: 'bold' }}>Edit Phone Number</Typography>
+            <Typography variant="h5" sx={{ fontWeight: 'bold' }}>Edit Phone Number</Typography>
                     <Box  sx={{m: 2}}>
                       <FormControl sx={{width: "50%"}} error={numberError}>
                         <FormLabel>Phone Number</FormLabel>
@@ -182,8 +246,14 @@ export default function EditPhoneNumber() {
                       </RadioGroup>
                     </FormControl>
                     </Box>
+                    <Box sx={{mb:2}} display={loading ? "inhert" : "none"} >
+                    <CircularProgress color="inherit" />
+              
+                    </Box>
+                    
                     <Box sx={{mb:2}}>
-                    <Button variant="contained"><Typography variant="h6" onClick={handleUpdate}>Update</Typography></Button>
+                    
+                    <Button variant="contained" disabled={loading} ><Typography variant="h6" onClick={handleUpdate}>Update</Typography></Button>
                     </Box>
                     
 
