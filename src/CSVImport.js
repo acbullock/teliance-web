@@ -347,8 +347,6 @@ export default function CSVImport(props) {
           </FormControl>
           <Box sx={{mt:2}}>
           <Button variant="contained" color="info" onClick={handleExport}>Export</Button>
-          <p>{exportAreaCode} - {exportSource} - {exportAvailable === "Available" ? 1 : 0} -{exportRegion}</p>
-          
           <Collapse in={resultsAlert} >
             <Alert onClose={()=>setResultsAlert(false)} severity="info" sx={{m: 3}}>
               {results.length} Results.
