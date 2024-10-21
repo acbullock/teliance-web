@@ -3,6 +3,7 @@ import { Typography, Container, Tabs, Tab,Box } from '@mui/material';
 import AddPhoneNumber from "./AddPhoneNumber"
 import EditPhoneNumber from "./EditPhoneNumber"
 import RingBoost from "./RingBoost"
+import CSVImport from "./CSVImport"
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -50,7 +51,7 @@ const [currentTab, setCurrentTab] = React.useState(0);
           <EditPhoneNumber appStates={props.appStates} appSetters={props.appSetters}/>
         </CustomTabPanel>
         <CustomTabPanel value={currentTab} index={2}>
-          CSV Import..
+          <CSVImport appStates={props.appStates}/>
         </CustomTabPanel>
         <CustomTabPanel value={currentTab} index={3}>
           <RingBoost />
