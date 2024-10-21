@@ -264,7 +264,7 @@ export default function CSVImport(props) {
        
        <Grid container spacing={2} flexDirection="row" sx={{mt:2}} >
         <Grid item lg={6} >
-          <Card >
+          <Card elevation={3}>
           <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Grid container flexDirection="column" sx={{width: "50%"}} spacing={2} gap={2}>
             <Typography variant="h6" sx={{fontWeight:"bold", mb: 2}}>Import CSV</Typography>
