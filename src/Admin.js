@@ -40,7 +40,7 @@ const [currentTab, setCurrentTab] = React.useState(0);
           <Tabs variant="scrollable" value={currentTab} onChange={handleChangeTab} aria-label="admin tabs">
             <Tab label="Add Number" {...a11yProps(0)} sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}/>
             <Tab label="Edit Number" {...a11yProps(1)}  sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}/>
-            <Tab label="CSV Import" {...a11yProps(2)}  sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}/>
+            <Tab label="Import / Export" {...a11yProps(2)}  sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}/>
             <Tab label="RingBoost" {...a11yProps(3)}  sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}/>
           </Tabs>
         </Box>

@@ -7,7 +7,13 @@ import {
   Card, 
   CardContent,
   Button, 
-  CircularProgress 
+  CircularProgress,
+  Autocomplete,
+  FormControl,
+  TextField,
+  Box,
+  Collapse,
+  Alert
 } from '@mui/material'; 
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
@@ -27,6 +33,130 @@ const VisuallyHiddenInput = styled('input')({
 export default function CSVImport(props) {
   const [uploadProgress, setUploadProgress] = React.useState(0)
   const [raw, setRaw] = React.useState('')
+
+  //export vals
+  const [exportAreaCode, setExportAreaCode] = React.useState('')
+  const [exportRegion, setExportRegion] = React.useState('')
+  const [exportAvailable, setExportAvailable] = React.useState('')
+  const [exportSource, setExportSource] = React.useState("")
+  const [results, setResults] = React.useState([])
+  const [resultsAlert, setResultsAlert] = React.useState(false)
+
+  let handleExport = async () => {
+    setResultsAlert(false)
+    let available = exportAvailable === "" ? "" : exportAvailable === "Available" ?  1 : 0;
+    let region = exportRegion;
+    let area_code = exportAreaCode
+    let source = exportSource;
+    let query = '?'
+    
+    // build query.
+    if (available !== ""){
+      if (query !== "?") {
+        query += "&"
+      }
+      query += `available=${available}`
+    }
+    if (region !== ""){
+      if (query !== "?") {
+        query += "&"
+      }
+      query += `region=${region}`
+    }
+    if (area_code !== ""){
+      if (query !== "?") {
+        query += "&"
+      }
+      query += `areaCode=${area_code}`
+    }
+    if (source !== ""){
+      if (query !== "?") {
+        query += "&"
+      }
+      query += `source=${source}`
+    }
+    let url = `https://eddb.teliance.com/api/phone-numbers/filter${query}`
+    console.log(url)
+    let results = await fetch(url)
+    //to do: alert feedback: error
+    if (!results.ok){
+      console.log("error")
+      setResults([])
+      setResultsAlert(true)
+      return
+    }
+    else {
+      console.log("success")
+
+      results = await results.json()
+      setResults(results)
+      setResultsAlert(true)
+
+      //build CSV
+      let csv = "Number,Price,State,NPA,Available,Source\n"
+      for(let r of results) {
+        csv += `${r.number},${r.price},${r.region},${r.area_code},${r.available},${r.source}\n`
+      }
+      
+      // Get the current timestamp
+      let timestamp = new Date().toISOString().replace(/[:\-T.]/g, '_').slice(0, -1);
+
+      // Create a Blob from the CSV data
+      let blob = new Blob([csv], { type: 'text/csv' });
+      
+      // Create a link element
+      let a = document.createElement('a');
+
+      // Create a URL for the Blob and set it as the href for the anchor
+      let urlObject = URL.createObjectURL(blob);
+      a.href = urlObject;
+      
+      // Set the download attribute to specify the file name
+      a.download = `export_${timestamp}.csv`;
+      
+      // Append the link to the body (required for Firefox)
+      document.body.appendChild(a);
+      
+      // Programmatically click the link to trigger the download
+      a.click();
+
+      // Remove the link from the document
+      document.body.removeChild(a);
+
+      // Clean up the URL object
+      URL.revokeObjectURL(urlObject);
+    }
+
+
+  }
+
+// $("#exportButton").click(async ()=>{
+
+    
+
+    
+//     // Remove the link from the document
+//     document.body.removeChild(a);
+
+//     // Clean up the URL object
+//     URL.revokeObjectURL(urlObject);
+     
+    
+    
+//   })
+
+
+
+
+
+
+
+
+
+
+
+
+
   const parseCSV = async (csvContent) => {
     let rows = csvContent.split('\n');
     let rowArr = []
@@ -132,13 +262,14 @@ export default function CSVImport(props) {
     <Container maxWidth={false} sx={{mt:15}}>
        <Typography variant="h4" sx={{fontWeight:"bold"}}>CSV Import/Export</Typography>
        
-       <Grid container spacing={1} flexDirection="row" sx={{mt:2}} >
+       <Grid container spacing={2} flexDirection="row" sx={{mt:2}} >
         <Grid item lg={6} >
-          <Card>
+          <Card >
           <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Grid container flexDirection="column" sx={{width: "50%"}} spacing={2} gap={2}>
             <Typography variant="h6" sx={{fontWeight:"bold", mb: 2}}>Import CSV</Typography>
             <Button
+            color="info"
               component="label"
               role={undefined}
               variant="outlined"
@@ -161,10 +292,69 @@ export default function CSVImport(props) {
           </CardContent>
           </Card>
         </Grid>
-        <Grid item lg={6}>
-          <Card>
-          <CardContent>
+        <Grid item lg={6} >
+          <Card elevation={3} sx={{overflow:'visible'}}>
+          <CardContent >
           <Typography variant="h6" sx={{fontWeight:"bold"}}>Export to CSV</Typography>
+          <Typography  sx={{fontWeight:"bold"}}>Filters:</Typography>
+          <FormControl sx={{width:"80%", mt: 2}} >
+            <Autocomplete
+              disablePortal
+              options={Array.from(new Set(props.appStates.acRegions.map(a=>a.area_code))).sort((a,b)=>a-b)}
+              value={exportAreaCode}
+              id="areaCode"
+              onChange={(e)=>setExportAreaCode(e.target.innerText)}
+              label="Area Code"
+              defaultValue=""
+              renderInput={(params) => <TextField {...params} label="Area Code" />}
+            />
+          </FormControl>
+          <FormControl sx={{width:"80%", mt: 2}} >
+            <Autocomplete
+              disablePortal
+              options={Array.from(new Set(props.appStates.acRegions.map(a=>a.region))).sort((a,b)=>a-b)}
+              value={exportRegion}
+              id="region"
+              onChange={(e)=>setExportRegion(e.target.innerText)}
+              label="Region"
+              defaultValue=""
+              renderInput={(params) => <TextField {...params} label="Region" />}
+            />
+          </FormControl>
+          <FormControl sx={{width:"80%", mt: 2}} >
+            <Autocomplete
+              disablePortal
+              options={["ringboost", "teliance"]}
+              value={exportSource}
+              id="source"
+              onChange={(e)=>setExportSource(e.target.innerText)}
+              label="Source"
+              defaultValue=""
+              renderInput={(params) => <TextField {...params} label="Source" />}
+            />
+          </FormControl>
+          <FormControl sx={{width:"80%", mt: 2}} >
+            <Autocomplete
+              disablePortal
+              options={["Available", "Unavailable"]}
+              value={exportAvailable}
+              id="available"
+              onChange={(e)=>setExportAvailable(e.target.innerText)}
+              label="Available"
+              defaultValue=""
+              renderInput={(params) => <TextField {...params} label="Available/unavailable" />}
+            />
+          </FormControl>
+          <Box sx={{mt:2}}>
+          <Button variant="contained" color="info" onClick={handleExport}>Export</Button>
+          <p>{exportAreaCode} - {exportSource} - {exportAvailable === "Available" ? 1 : 0} -{exportRegion}</p>
+          
+          <Collapse in={resultsAlert} >
+            <Alert onClose={()=>setResultsAlert(false)} severity="info" sx={{m: 3}}>
+              {results.length} Results.
+            </Alert>
+          </Collapse>
+            </Box>
           </CardContent>
           </Card>
         </Grid>
